@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const ContactCTA = () => {
   const [submitted, setSubmitted] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    if (!form.checkValidity()) return;
     setSubmitted(true);
   };
 
@@ -18,11 +21,12 @@ const ContactCTA = () => {
 
       <div className="relative z-10 mx-auto max-w-5xl px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5 }}
           className="overflow-hidden rounded-3xl border border-white/10 bg-black/40 shadow-2xl backdrop-blur-xl"
+          aria-live="polite"
         >
           <div className="grid gap-0 md:grid-cols-2">
             <div className="relative p-8 md:p-10">
@@ -33,7 +37,7 @@ const ContactCTA = () => {
               <p className="relative z-10 mt-2 text-sm text-white/70">
                 Request a free security audit and roadmap tailored to your environment.
               </p>
-              <ul className="relative z-10 mt-6 space-y-3 text-sm text-white/70">
+              <ul className="relative z-10 mt-6 space-y-3 text-sm text-white/70" role="list">
                 <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />Attack surface analysis</li>
                 <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-purple-400" />Prioritized risk insights</li>
                 <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />Actionable remediation plan</li>
@@ -47,37 +51,44 @@ const ContactCTA = () => {
                   <p className="mt-2 text-sm text-white/70">Our team will reach out shortly.</p>
                 </div>
               ) : (
-                <form onSubmit={onSubmit} className="space-y-4">
+                <form onSubmit={onSubmit} className="space-y-4" noValidate>
                   <div>
-                    <label className="text-xs text-white/60">Name</label>
+                    <label htmlFor="name" className="text-xs text-white/60">Name</label>
                     <input
+                      id="name"
                       required
                       type="text"
                       className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/40 outline-none focus:border-cyan-400/60"
                       placeholder="Jane Doe"
+                      aria-required="true"
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-white/60">Email</label>
+                    <label htmlFor="email" className="text-xs text-white/60">Email</label>
                     <input
+                      id="email"
                       required
                       type="email"
                       className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/40 outline-none focus:border-cyan-400/60"
                       placeholder="jane@company.com"
+                      aria-required="true"
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-white/60">Message</label>
+                    <label htmlFor="message" className="text-xs text-white/60">Message</label>
                     <textarea
+                      id="message"
                       required
                       rows={4}
                       className="mt-1 w-full resize-none rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/40 outline-none focus:border-cyan-400/60"
                       placeholder="Tell us about your environment and goals..."
+                      aria-required="true"
                     />
                   </div>
                   <button
                     type="submit"
                     className="w-full rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(59,130,246,0.35)] transition-transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black"
+                    aria-label="Submit audit request"
                   >
                     Request Audit
                   </button>
