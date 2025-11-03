@@ -13,10 +13,10 @@ const Hero = () => {
         <div className="absolute -bottom-32 left-[-10%] h-96 w-96 rounded-full bg-gradient-to-tr from-purple-600/25 to-cyan-500/25 blur-3xl" />
       </div>
 
-      {/* 3D Spline Scene */}
+      {/* 3D Spline Scene (full-width cover) */}
       <div className="absolute inset-0" aria-hidden="true">
         <Spline
-          scene="https://prod.spline.design/DtQLjBkD1UpownGS/scene.splinecode"
+          scene="https://prod.spline.design/zhZFnwyOYLgqlLWk/scene.splinecode"
           style={{ width: '100%', height: '100%' }}
         />
       </div>
